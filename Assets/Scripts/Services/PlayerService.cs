@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerService
+public class PlayerService : MonoBehaviour 
 {
     //public PlayerStats _player;
 
@@ -10,18 +8,18 @@ public class PlayerService
     public Player _player = null;
 
 
-    public PlayerService()
+    private void Awake()
     {
         string userString = PlayerPrefs.GetString(PLAYER_KEY, null);
         Debug.Log("userstring " + userString);
 
         if (!string.IsNullOrEmpty(userString) && !userString.Equals("null"))
         {
-            _player = JsonUtility.FromJson<Player>(userString);
+            _player = JsonCustomSerializer.Deserialize<Player>(userString);
         }
         else
         {
-            _player = new Player("Guest" + Random.Range(10000,99999), 0, 0, 0f, 0, 1, 5000);
+            _player = new Player("Guest" + Random.Range(10000, 99999), 0, 0, 0f, 0, 1, 5000, new PlayerSettings(true,true,1f,1f,false,false));
             SaveUser();
         }
     }
@@ -29,8 +27,8 @@ public class PlayerService
     private void SaveUser(bool saveUserOnline = false)
     {
 
-        PlayerPrefs.SetString(PLAYER_KEY, JsonUtility.ToJson(_player));
-
+        PlayerPrefs.SetString(PLAYER_KEY, JsonCustomSerializer.Serialize(_player));
+        Debug.Log(PlayerPrefs.GetString(PLAYER_KEY, null));
         if (saveUserOnline)
         {
             //Save User Online functionality will go here.
@@ -39,7 +37,7 @@ public class PlayerService
 
     public void ResetPlayer()
     {
-        _player = new Player("Guest" + Random.Range(10000, 99999), 0, 0, 0f, 0, 1, 5000);
+        _player = new Player("Guest" + Random.Range(10000, 99999), 0, 0, 0f, 0, 1, 5000, new PlayerSettings(true, true, 1f, 1f, false, false));
         SaveUser();
     }
 

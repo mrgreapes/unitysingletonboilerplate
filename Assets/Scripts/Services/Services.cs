@@ -5,18 +5,25 @@ public class Services : SingletonMonobehaviour<Services>
     public bool clearPrefs;
 
     #region Variables
-
+    [SerializeField]
     private PlayerService _playerService;
-    private BackLogService _backLogService;
-    private InputService _inputService;
+    [SerializeField]
+    private AppService _appService;
+    //private BackLogService _backLogService;
+    //private InputService _inputService;
+    [SerializeField]
     private UIService _uiService;
+    [SerializeField]
     private AudioService _audioService;
-    private CameraService _cameraService;
+    //private CameraService _cameraService;
+    [SerializeField]
     private GameService _gameService;
-    private ScoreService _scoreService;
-    private VibrationService _vibrationService;
-    private EffectService _effectService;
-    private SceneService _sceneService;
+    [SerializeField]
+    public NotificationService _notificationService;
+    //private ScoreService _scoreService;
+    //private VibrationService _vibrationService;
+    //private EffectService _effectService;
+    //private SceneService _sceneService;
     //private GameElements _gameElements;
     private Canvas _canvas;
     //private DebugLogManager _debugConsole;
@@ -53,15 +60,41 @@ public class Services : SingletonMonobehaviour<Services>
         get { return instance._playerService; }
     }
 
-    public static BackLogService BackLogService
+    public static AppService AppService
     {
-        get { return instance._backLogService; }
+        get { return instance._appService; }
+    }
+    public static UIService UIService
+    {
+        get { return instance._uiService; }
+    }
+    public static GameService GameService
+    {
+        get { return instance._gameService; }
     }
 
-    public static InputService InputService
+    public static AudioService AudioService
     {
-        get { return instance._inputService; }
+        get { return instance._audioService; }
     }
+
+    public static NotificationService NotificationService
+    {
+        get { return instance._notificationService; }
+    }
+    //public static VibrationService vibrationService
+    //{
+    //    get { return instance._vibrationService; }
+    //}
+    //public static BackLogService BackLogService
+    //{
+    //    get { return instance._backLogService; }
+    //}
+
+    //public static InputService InputService
+    //{
+    //    get { return instance._inputService; }
+    //}
 
     //public static GameObject DebugConsole
     //{
@@ -73,45 +106,29 @@ public class Services : SingletonMonobehaviour<Services>
     //    get { return instance._gameElements; }
     //}
 
-    public static UIService UIService
-    {
-        get { return instance._uiService; }
-    }
 
-    public static AudioService AudioService
-    {
-        get { return instance._audioService; }
-    }
 
-    public static CameraService CameraService
-    {
-        get { return instance._cameraService; }
-    }
+    //public static CameraService CameraService
+    //{
+    //    get { return instance._cameraService; }
+    //}
 
-    public static GameService GameService
-    {
-        get { return instance._gameService; }
-    }
 
-    public static ScoreService ScoreService
-    {
-        get { return instance._scoreService; }
-    }
+    //public static ScoreService ScoreService
+    //{
+    //    get { return instance._scoreService; }
+    //}
 
-    public static EffectService EffectService
-    {
-        get { return instance._effectService; }
-    }
+    //public static EffectService EffectService
+    //{
+    //    get { return instance._effectService; }
+    //}
 
-    public static SceneService SceneService
-    {
-        get { return instance._sceneService; }
-    }
+    //public static SceneService SceneService
+    //{
+    //    get { return instance._sceneService; }
+    //}
 
-    public static VibrationService vibrationService
-    {
-        get { return instance._vibrationService; }
-    }
 
     //public static ServicesOrganizer ServicesOrganizer
     //{

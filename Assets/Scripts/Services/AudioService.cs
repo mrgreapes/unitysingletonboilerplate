@@ -1,179 +1,146 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class AudioService : MonoBehaviour
 {
-	public bool isSoundEnable = true;
-	public bool isMusicEnable = true;
 
-	#region Gameplay Spesific
-	public AudioClip shapePlaceSound;
-	public AudioClip shapeMoveSound;
-	public AudioClip explosionSound;
-	public AudioClip blockSpawnSound;
-	public AudioClip timeCountDownSound;
-    public AudioClip shapeRotateSound;
+    #region Game Spesific
+    public AudioClip dropSound;
+    #endregion
+    public AudioSource[] bgMusic;
+
+    #region UI Fields
+    public AudioClip normalBtnSound;
+    public AudioClip playBtnSound;
+    public AudioClip SelectBtnSound;
+    public AudioClip okBtnSound;
+    public AudioClip uiClick;
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    public AudioClip popUpOpen;
+    public AudioClip popUpClose;
+    public AudioSource uiSoundPlayer;
+    public AudioSource alarmSound;
+    public AudioClip sliderSound;
+    public AudioClip enemiesStatusSound;
+    public AudioClip levelNumberSound;
+    public AudioClip buttonsSoundAtLevelPopup;
+
     #endregion
 
-    public AudioClip gameMusic;
-	public AudioClip uiClick;
-	public AudioClip winSound;
-	public AudioClip loseSound;
-	public AudioClip popUpOpen;
-	public AudioClip popUpClose;
-
-    #region Audio Sources Fields
-    public AudioSource musicSource;
-	public AudioSource soundSource;
-	#endregion
-
-
-	#region Sound FX Methods
-	public void PlayLoseSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		StopGameMusic();
-		soundSource.PlayOneShot(loseSound);
-	}
-
-	public void PlayUIClick()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(uiClick);
-	}
-
-	public void PlayWinSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		StopGameMusic();
-		soundSource.PlayOneShot(winSound);
-	}
-
-	public void PlaySplashScreenSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-	}
-
-	public void PlayPopUpOpenSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(popUpOpen);
-	}
-
-	public void PlayPopUpCloseSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-	}
-
-	public void PlayShapePlaceSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(shapePlaceSound);
-	}
-
-	public void PlayShapeMoveSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(shapeMoveSound);
-	}
-
-	public void PlayExplosionSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(explosionSound);
-	}
-
-	public void PlayBlockSpawnSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(blockSpawnSound);
-	}
-
-	public void PlayTimeCountDownSound()
-	{
-		if (!isSoundEnable)
-			return;
-
-		soundSource.PlayOneShot(timeCountDownSound);
-	}
-
-    public void PlayShapeRotateSound()
+    private void Start()
     {
-        if (!isSoundEnable)
-            return;
-
-        soundSource.PlayOneShot(shapeRotateSound);
+        foreach (AudioSource source in bgMusic)
+        {
+            source.ignoreListenerPause = true;
+            source.ignoreListenerVolume = true;
+        }
     }
 
-    public void SetSoundFxVolume(float value)
-	{
-		float temp = value + soundSource.volume;
-		if (temp < 0 || temp > 1)
-			return;
-		else
-			soundSource.volume += value;
-	}
-	#endregion
-
-	#region Music Methods
-
-	public void EnableGameMusic(bool enable)
+    public void InitializeSounds()
     {
-		isMusicEnable = enable;
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (!bgMusic[0].isPlaying)
+                bgMusic[0].Play();
 
-		if (isMusicEnable)
-			PlayGameMusic();
-		else
-			StopGameMusic();
+            bgMusic[1].Stop();
+        }
+        else
+        {
+            //if(!bgMusic[1].isPlaying)
+            //	bgMusic[1].Play();
 
-	}
-
-	public void PlayGameMusic()
-	{
-		musicSource.clip = gameMusic;
-		musicSource.Play();
-	}
-
-    public void RestartGameMusic()
-    {
-        StopGameMusic();
-        musicSource.clip = gameMusic;
-        musicSource.Play();
+            bgMusic[0].Stop();
+            Debug.Log("Uncomment Gameplay sounds from here");
+        }
+        //SetMusicVolume(Services.UserSettings.GetMusic());
+        //SetSoundVolume(Services.UserSettings.GetSound());
     }
 
-    public void StopGameMusic()
-	{
-		musicSource.Stop();
-	}
+    public void SetMusicVolume(float value)
+    {
+        foreach (AudioSource source in bgMusic)
+        {
+            source.volume = value;
+        }
+        //Services.UserSettings.SetMusic(value);
+    }
 
-	public void SetSoundMusicVolume(float value)
-	{
-		float temp = value + musicSource.volume;
-		if (temp < 0 || temp > 1)
-			return;
-		else
-			musicSource.volume += value;
-	}
-	#endregion
+    public void SetSoundVolume(float value)
+    {
+        AudioListener.volume = value;
+        //Services.UserSettings.SetSounds(value);
+
+    }
+
+
+
+
+    #region Sound FX Methods
+
+    public void PlaySound(AudioClip clip)
+    {
+        uiSoundPlayer.PlayOneShot(clip);
+    }
+
+    public void PlayNormalBtnSound()
+    {
+        uiSoundPlayer.PlayOneShot(normalBtnSound);
+    }
+    public void PlayBtnSound()
+    {
+        uiSoundPlayer.PlayOneShot(playBtnSound);
+    }
+    public void PlaySelectBtnSound()
+    {
+        uiSoundPlayer.PlayOneShot(SelectBtnSound);
+    }
+
+    public void PlayOkBtnSound()
+    {
+        uiSoundPlayer.PlayOneShot(okBtnSound);
+    }
+
+    public void PlayWinSound()
+    {
+        uiSoundPlayer.PlayOneShot(winSound);
+        alarmSound.Pause();
+        //Invoke("StopAllSounds", 0.3f);
+    }
+    public void PlayItemPurchasedSound()
+    {
+        uiSoundPlayer.PlayOneShot(winSound);
+    }
+    public void StopItemPurchasedSound()
+    {
+        uiSoundPlayer.Pause();
+    }
+    public void PlayLoseSound()
+    {
+        uiSoundPlayer.PlayOneShot(loseSound);
+        //Invoke("StopAllSounds", loseSound.length);
+    }
+
+    public void StopAllSounds()
+    {
+        AudioListener.volume = 0;
+
+        foreach (var item in bgMusic)
+        {
+            item.Stop();
+        }
+    }
+    public void PlayAllSounds()
+    {
+        AudioListener.volume = 1;
+
+        foreach (var item in bgMusic)
+        {
+            bgMusic[0].Play();
+        }
+    }
+    #endregion
 
 }
